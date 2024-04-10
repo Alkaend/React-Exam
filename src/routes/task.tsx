@@ -26,12 +26,7 @@ const Contact = () => {
 
 	return (
 		<div id="contact">
-			<div>
-				<img
-					key={contact?.avatar}
-					src={contact?.avatar}
-				/>
-			</div>
+			
 
 			<div>
 				<h1>

@@ -6,19 +6,24 @@ import { useEffect, useState } from "react";
 import { useTypedSelector } from "/src/store";
 
 type loaderProps = {
-    request: {
-        url: string
-    }
+	request: {
+		url: string
+	}
 }
 
 export async function action(): Promise<Response> {
 
-	const contact = await createContact();
+	const task = {
+		id:crypto.randomUUID(),
+		name:'',
+		description:'',
+		status:false
+	} ;
 
-	return redirect(`/contacts/${contact.id}/edit`);
+	return redirect(`/contacts/${task.id}/edit`);
 }
 
-export async function loader({ request  }:loaderProps): Promise<{ contacts: ContactType[], q: string }> {
+export async function loader({ request }: loaderProps): Promise<{ contacts: ContactType[], q: string }> {
 	const url = new URL(request.url);
 	const q = url.searchParams.get("q") || "";
 	const contacts = await getContacts(q);
@@ -26,7 +31,7 @@ export async function loader({ request  }:loaderProps): Promise<{ contacts: Cont
 }
 
 const Root = () => {
-	const { contacts, q } = useLoaderData() as { contacts: ContactType[], q: string };
+	const {  q } = useLoaderData() as { contacts: ContactType[], q: string };
 	const navigation = useNavigation();
 	const [query, setQuery] = useState(q);
 	const submit = useSubmit();
@@ -46,45 +51,31 @@ const Root = () => {
 	return (
 		<>
 			<div id="sidebar">
-				<h1>React Router Contacts</h1>
+				<h1>React Router Tasks</h1>
 				<div>
 					<Form id="search-form" role="search">
-						<input
-							id="q"
-							className={searching ? "loading" : ""}
-							aria-label="Search contacts"
-							placeholder="Search"
-							type="search"
-							name="q"
-							defaultValue={q}
-							onChange={(event) => {
-								const isFirstSearch = q == null;
-								submit(event.currentTarget.form, {
-									replace: !isFirstSearch,
-								});
-							}}
-						/>
-						<div
-							id="search-spinner"
-							aria-hidden
-							hidden={!searching}
-						/>
+						<div className="filter-buttons">
+							<button> All tasks</button>
+							<button> Done tasks</button>
+							<button> Undone tasks</button>
+						</div>
+
 						<div
 							className="sr-only"
 							aria-live="polite"
 						></div>
 					</Form>
 					<Form method="post">
-						<button type="submit">New</button>
+						<button type="submit">Add Task</button>
 					</Form>
 				</div>
 				<nav>
-					{contacts.length ? (
+					{tasks.length ? (
 						<ul>
-							{contacts.map((contact) => (
-								<li key={contact.id}>
+							{tasks.map((task) => (
+								<li key={task.id}>
 									<NavLink
-										to={`contacts/${contact.id}`}
+										to={`contacts/${task.id}`}
 										className={({ isActive, isPending }) =>
 											isActive
 												? "active"
@@ -93,18 +84,51 @@ const Root = () => {
 													: ""
 										}
 									>
-										<Link to={`contacts/${contact.id}`}>
-											{contact.first || contact.last ? (
+										<Link to={`contacts/${task.id}`}>
+											{task.name  ? (
 												<>
-													{contact.first} {contact.last}
+													{task.name}
 												</>
 											) : (
 												<i>No Name</i>
 											)}
 											{" "}
-											{contact.favorite && <span>★</span>}
+											{/* {task.favorite && <span>★</span>} */}
 										</Link>
 									</NavLink>
+
+									<div className="button-container">
+										<Form action={`${task.id}/edit`}>
+											<button type="submit">Edit</button>
+										</Form>
+										<Form
+											method="post"
+											action="destroy"
+											onSubmit={(event) => {
+												if (
+													!window.confirm(
+														"Please confirm you want to delete this record."
+													)
+												) {
+													event.preventDefault();
+												}
+											}}
+										>
+											<button type="submit">Delete</button>
+										</Form>
+
+										<Form>
+
+											<input type="checkbox" />
+
+										</Form>
+
+
+
+
+
+									</div>
+
 								</li>
 							))}
 						</ul>

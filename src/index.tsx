@@ -13,7 +13,7 @@ import ErrorPage from './error-page';
 import Contact, {
 	loader as contactLoader,
 	action as contactAction
-} from './routes/contact';
+} from './routes/task';
 import EditContact, {
 	action as editAction
 } from './routes/edit';
@@ -82,6 +82,5 @@ root.render(
 		<Provider store = {store}>
 			<RouterProvider router={router} />
 		</Provider>
-
 	</StrictMode>
 )

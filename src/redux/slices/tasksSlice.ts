@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 type Task = {
     name: string
 }
-const INITIAL_STATE: Task[] = []
+const INITIAL_STATE: Task[] = [];
 
 export const tasksSlice = createSlice({
     name: 'tasks',
