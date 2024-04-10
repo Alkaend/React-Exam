@@ -1,25 +1,29 @@
 import { Form, useLoaderData, redirect, useNavigate, ActionFunctionArgs } from "react-router-dom";
-import ContactType from "src/types/Contact";
 
 import { updateContact } from "../contacts";
+//@ts-ignore
+import { useTypedSelector } from "/src/store";
+import store from "/src/store";
+import { updateTask } from "/src/redux/slices/tasksSlice";
 
 export async function action({ request, params }: ActionFunctionArgs) {
 	const formData = await request.formData();
 
-	/* const firstName = formData.get("first");
-	const lastName = formData.get("last"); */
-
+	
 	const updates = Object.fromEntries(formData);
-	updates.first;
-	updates.last;
 
-	await updateContact(params.contactId, updates);
 
-	return redirect(`/contacts/${params.contactId}`);
+	store.dispatch(updateTask({
+		id:params.taskId, ...updates
+	}));
+
+	return redirect(`/tasks/${params.taskId}`);
 }
 
 const EditContact = () => {
-	const { contact } = useLoaderData() as { contact: ContactType };
+	const taskId = useLoaderData() as string;
+	const tasks = useTypedSelector(state => state.tasksReducer);
+	const task = tasks.find(task => task.id === taskId);
 	const navigate = useNavigate();
 
 	return (
@@ -30,23 +34,23 @@ const EditContact = () => {
 					placeholder=""
 					aria-label="First name"
 					type="text"
-					name="first"
-					defaultValue={contact.first}
+					name="name"
+					defaultValue={task?.name}
 				/>
 			</p>
 			<label>
 				<span>Description</span>
 				<textarea
 					name="description"
-					defaultValue={contact.notes}
+					defaultValue={task?.description}
 					rows={6}
 				/>
-			</label>
+			</label>		
 			<p>
 				<button type="submit">Save</button>
 				<button type="button"
 					onClick={() => {
-						navigate(-1);
+						navigate('/');
 					}}
 				>
 					Cancel

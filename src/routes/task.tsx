@@ -1,17 +1,11 @@
 import { Form, useFetcher, LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { getContact, updateContact } from "../contacts";
+import {  updateContact } from "../contacts";
 import ContactType from "src/types/Contact";
 import Nullable from "src/types/Nullable";
+import { useTypedSelector } from "/src/store";
 
-export async function loader({ params }: LoaderFunctionArgs): Promise<{ contact: Nullable<ContactType> }> {
-	const contact = await getContact(params.contactId);
-	if (!contact) {
-		throw new Response("", {
-			status: 404,
-			statusText: "Not Found",
-		});
-	}
-	return { contact };
+export async function loader({ params }: LoaderFunctionArgs): Promise<string|undefined> {
+	return params.taskId
 }
 
 export async function action({ request, params }: LoaderFunctionArgs) {
@@ -22,7 +16,9 @@ export async function action({ request, params }: LoaderFunctionArgs) {
 }
 
 const Contact = () => {
-	const { contact } = useLoaderData() as { contact: Nullable<ContactType> };
+	const taskId = useLoaderData() as string;
+	const tasks = useTypedSelector(state => state.tasksReducer);
+	const task = tasks.find(task => task.id === taskId);
 
 	return (
 		<div id="contact">
@@ -30,50 +26,27 @@ const Contact = () => {
 
 			<div>
 				<h1>
-					{contact?.first || contact?.last ? (
+					{task?.name  ? (
 						<>
-							{contact?.first} {contact?.last}
+							{task?.name} 
 						</>
 					) : (
 						<i>No Name</i>
 					)}
 					{" "}
-					<Favorite contact={contact} />
+					{/* <Favorite contact={contact} /> */}
 				</h1>
 
-				{contact?.twitter && (
+				{task?.description && (
 					<p>
-						<a
-							target="_blank"
-							href={`https://twitter.com/${contact?.twitter}`}
-						>
-							{contact?.twitter}
-						</a>
+						{task?.description}
 					</p>
 				)}
 
-				{contact?.notes && <p>{contact?.notes}</p>}
+				{ <p>{task?.status}</p>}
 
-				<div>
-					<Form action="edit">
-						<button type="submit">Edit</button>
-					</Form>
-					<Form
-						method="post"
-						action="destroy"
-						onSubmit={(event) => {
-							if (
-								!window.confirm(
-									"Please confirm you want to delete this record."
-								)
-							) {
-								event.preventDefault();
-							}
-						}}
-					>
-						<button type="submit">Delete</button>
-					</Form>
-				</div>
+				
+
 			</div>
 		</div>
 	);

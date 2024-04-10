@@ -3,7 +3,8 @@ import { getContacts, createContact } from "../contacts";
 import ContactType from "src/types/Contact";
 import { useEffect, useState } from "react";
 //@ts-ignore
-import { useTypedSelector } from "/src/store";
+import store, { useTypedSelector } from "/src/store";
+import { addTask } from "/src/redux/slices/tasksSlice";
 
 type loaderProps = {
 	request: {
@@ -20,7 +21,9 @@ export async function action(): Promise<Response> {
 		status:false
 	} ;
 
-	return redirect(`/contacts/${task.id}/edit`);
+	store.dispatch(addTask(task));
+
+	return redirect(`/tasks/${task.id}/edit`);
 }
 
 export async function loader({ request }: loaderProps): Promise<{ contacts: ContactType[], q: string }> {
@@ -75,7 +78,7 @@ const Root = () => {
 							{tasks.map((task) => (
 								<li key={task.id}>
 									<NavLink
-										to={`contacts/${task.id}`}
+										to={`tasks/${task.id}`}
 										className={({ isActive, isPending }) =>
 											isActive
 												? "active"
@@ -84,7 +87,7 @@ const Root = () => {
 													: ""
 										}
 									>
-										<Link to={`contacts/${task.id}`}>
+										<Link to={`tasks/${task.id}`}>
 											{task.name  ? (
 												<>
 													{task.name}
@@ -98,7 +101,7 @@ const Root = () => {
 									</NavLink>
 
 									<div className="button-container">
-										<Form action={`${task.id}/edit`}>
+										<Form action={`tasks/${task.id}/edit`}>
 											<button type="submit">Edit</button>
 										</Form>
 										<Form
