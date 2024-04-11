@@ -34,31 +34,15 @@ const router = createBrowserRouter([
 		action: rootAction,
 		errorElement: <ErrorPage />,
 		children: [
-
 			{
-				errorElement: <ErrorPage />,
-				children: [
-					{ index: true, element: <Index /> },
-					{
-						path: "tasks/:taskId",
-						element: <Contact />,
-						loader: contactLoader,
-						action: contactAction,
-					},
-
-				],
+				index: true,
+				element: <Index />,
 			},
-
 			{
 				path: "tasks/:taskId",
 				element: <Contact />,
 				loader: contactLoader,
 				action: contactAction,
-			},
-			{
-				index: true,
-				element: <Index />,
-				loader: contactLoader
 			},
 			{
 				path: "/tasks/:taskId/edit",

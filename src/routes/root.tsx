@@ -58,7 +58,7 @@ const Root = () => {
 				<div>
 					<Form id="search-form" role="search">
 						<div className="filter-buttons">
-							<button> All tasks</button>
+							<button > All tasks</button>
 							<button> Done tasks</button>
 							<button> Undone tasks</button>
 						</div>
@@ -106,7 +106,7 @@ const Root = () => {
 										</Form>
 										<Form
 											method="post"
-											action="destroy"
+											action={`tasks/${task.id}/destroy`}
 											onSubmit={(event) => {
 												if (
 													!window.confirm(

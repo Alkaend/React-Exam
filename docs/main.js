@@ -4691,21 +4691,42 @@ var ErrorPage = function ErrorPage() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   addTask: function() { return /* binding */ addTask; },
-/* harmony export */   tasksSlice: function() { return /* binding */ tasksSlice; }
+/* harmony export */   deleteTask: function() { return /* binding */ deleteTask; },
+/* harmony export */   tasksSlice: function() { return /* binding */ tasksSlice; },
+/* harmony export */   updateTask: function() { return /* binding */ updateTask; }
 /* harmony export */ });
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.modern.mjs");
+
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 
 var INITIAL_STATE = [];
-var tasksSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
+var tasksSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'tasks',
   initialState: INITIAL_STATE,
   reducers: {
     addTask: function addTask(state, action) {
       state.push(action.payload);
+    },
+    updateTask: function updateTask(state, action) {
+      var taskIndex = state.findIndex(function (task) {
+        return task.id === action.payload.id;
+      });
+      state[taskIndex] = _objectSpread(_objectSpread({}, state[taskIndex]), action.payload);
+    },
+    deleteTask: function deleteTask(state, action) {
+      var updatedTasks = state.filter(function (task) {
+        return task.id !== action.payload;
+      });
+      return updatedTasks;
     }
   }
 });
-var addTask = tasksSlice.actions.addTask;
+var _tasksSlice$actions = tasksSlice.actions,
+  addTask = _tasksSlice$actions.addTask,
+  updateTask = _tasksSlice$actions.updateTask,
+  deleteTask = _tasksSlice$actions.deleteTask;
 
 /* harmony default export */ __webpack_exports__["default"] = (tasksSlice.reducer);
 
@@ -4725,8 +4746,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/@remix-run/router/dist/router.js");
-/* harmony import */ var _contacts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../contacts */ "./src/contacts.ts");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/@remix-run/router/dist/router.js");
+/* harmony import */ var _src_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../src/store */ "./src/store.ts");
+/* harmony import */ var _src_redux_slices_tasksSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../src/redux/slices/tasksSlice */ "./src/redux/slices/tasksSlice.ts");
+
 
 
 
@@ -4741,11 +4764,9 @@ function _action() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           params = _ref.params;
-          _context.next = 3;
-          return (0,_contacts__WEBPACK_IMPORTED_MODULE_2__.deleteContact)(params.contactId);
+          _src_store__WEBPACK_IMPORTED_MODULE_2__["default"].dispatch((0,_src_redux_slices_tasksSlice__WEBPACK_IMPORTED_MODULE_3__.deleteTask)(params.taskId));
+          return _context.abrupt("return", (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.redirect)("/"));
         case 3:
-          return _context.abrupt("return", (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.redirect)("/"));
-        case 4:
         case "end":
           return _context.stop();
       }
@@ -4767,28 +4788,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   action: function() { return /* binding */ action; }
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/@remix-run/router/dist/router.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
-/* harmony import */ var _contacts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../contacts */ "./src/contacts.ts");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/@remix-run/router/dist/router.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
 /* harmony import */ var _src_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../src/store */ "./src/store.ts");
+/* harmony import */ var _src_redux_slices_tasksSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../../../../src/redux/slices/tasksSlice */ "./src/redux/slices/tasksSlice.ts");
 /* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 
 
 
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0,_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 
 //@ts-ignore
+
+
 
 function action(_x) {
   return _action.apply(this, arguments);
 }
 function _action() {
-  _action = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().mark(function _callee(_ref) {
+  _action = (0,_babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1__["default"])( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().mark(function _callee(_ref) {
     var request, params, formData, updates;
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default().wrap(function _callee$(_context) {
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_2___default().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           request = _ref.request, params = _ref.params;
@@ -4796,16 +4822,12 @@ function _action() {
           return request.formData();
         case 3:
           formData = _context.sent;
-          /* const firstName = formData.get("first");
-          const lastName = formData.get("last"); */
           updates = Object.fromEntries(formData);
-          updates.first;
-          updates.last;
-          _context.next = 9;
-          return (0,_contacts__WEBPACK_IMPORTED_MODULE_2__.updateContact)(params.contactId, updates);
-        case 9:
-          return _context.abrupt("return", (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.redirect)("/contacts/".concat(params.contactId)));
-        case 10:
+          _src_store__WEBPACK_IMPORTED_MODULE_3__["default"].dispatch((0,_src_redux_slices_tasksSlice__WEBPACK_IMPORTED_MODULE_4__.updateTask)(_objectSpread({
+            id: params.taskId
+          }, updates)));
+          return _context.abrupt("return", (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.redirect)("/tasks/".concat(params.taskId)));
+        case 7:
         case "end":
           return _context.stop();
       }
@@ -4814,22 +4836,22 @@ function _action() {
   return _action.apply(this, arguments);
 }
 var EditContact = function EditContact() {
-  var taskId = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useLoaderData)();
+  var taskId = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useLoaderData)();
   var tasks = (0,_src_store__WEBPACK_IMPORTED_MODULE_3__.useTypedSelector)(function (state) {
     return state.tasksReducer;
   });
   var task = tasks.find(function (task) {
     return task.id === taskId;
   });
-  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useNavigate)();
-  return /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Form, {
+  var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useNavigate)();
+  return /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Form, {
     method: "post",
     id: "contact-form"
   }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("span", null, "Name"), /*#__PURE__*/React.createElement("input", {
     placeholder: "",
     "aria-label": "First name",
     type: "text",
-    name: "first",
+    name: "name",
     defaultValue: task === null || task === void 0 ? void 0 : task.name
   })), /*#__PURE__*/React.createElement("label", null, /*#__PURE__*/React.createElement("span", null, "Description"), /*#__PURE__*/React.createElement("textarea", {
     name: "description",
@@ -4840,7 +4862,7 @@ var EditContact = function EditContact() {
   }, "Save"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: function onClick() {
-      navigate(-1);
+      navigate('/');
     }
   }, "Cancel")));
 };
@@ -4920,7 +4942,7 @@ function _action() {
             status: false
           };
           _src_store__WEBPACK_IMPORTED_MODULE_5__["default"].dispatch((0,_src_redux_slices_tasksSlice__WEBPACK_IMPORTED_MODULE_6__.addTask)(task));
-          return _context.abrupt("return", (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.redirect)("/contacts/".concat(task.id, "/edit")));
+          return _context.abrupt("return", (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.redirect)("/tasks/".concat(task.id, "/edit")));
         case 3:
         case "end":
           return _context.stop();
@@ -4992,18 +5014,18 @@ var Root = function Root() {
     return /*#__PURE__*/React.createElement("li", {
       key: task.id
     }, /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.NavLink, {
-      to: "contacts/".concat(task.id),
+      to: "tasks/".concat(task.id),
       className: function className(_ref3) {
         var isActive = _ref3.isActive,
           isPending = _ref3.isPending;
         return isActive ? "active" : isPending ? "pending" : "";
       }
     }, /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link, {
-      to: "contacts/".concat(task.id)
+      to: "tasks/".concat(task.id)
     }, task.name ? /*#__PURE__*/React.createElement(React.Fragment, null, task.name) : /*#__PURE__*/React.createElement("i", null, "No Name"), " ")), /*#__PURE__*/React.createElement("div", {
       className: "button-container"
     }, /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Form, {
-      action: "".concat(task.id, "/edit")
+      action: "tasks/".concat(task.id, "/edit")
     }, /*#__PURE__*/React.createElement("button", {
       type: "submit"
     }, "Edit")), /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Form, {
@@ -5043,10 +5065,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/asyncToGenerator */ "./node_modules/@babel/runtime/helpers/esm/asyncToGenerator.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
 /* harmony import */ var _contacts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../contacts */ "./src/contacts.ts");
+/* harmony import */ var _src_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../../src/store */ "./src/store.ts");
 /* provided dependency */ var React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+
 
 
 
@@ -5096,36 +5120,22 @@ function _action() {
   return _action.apply(this, arguments);
 }
 var Contact = function Contact() {
-  var _ref3 = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useLoaderData)(),
-    contact = _ref3.contact;
+  var taskId = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useLoaderData)();
+  var tasks = (0,_src_store__WEBPACK_IMPORTED_MODULE_3__.useTypedSelector)(function (state) {
+    return state.tasksReducer;
+  });
+  var task = tasks.find(function (task) {
+    return task.id === taskId;
+  });
   return /*#__PURE__*/React.createElement("div", {
     id: "contact"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, contact !== null && contact !== void 0 && contact.first || contact !== null && contact !== void 0 && contact.last ? /*#__PURE__*/React.createElement(React.Fragment, null, contact === null || contact === void 0 ? void 0 : contact.first, " ", contact === null || contact === void 0 ? void 0 : contact.last) : /*#__PURE__*/React.createElement("i", null, "No Name"), " ", /*#__PURE__*/React.createElement(Favorite, {
-    contact: contact
-  })), (contact === null || contact === void 0 ? void 0 : contact.twitter) && /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement("a", {
-    target: "_blank",
-    href: "https://twitter.com/".concat(contact === null || contact === void 0 ? void 0 : contact.twitter)
-  }, contact === null || contact === void 0 ? void 0 : contact.twitter)), (contact === null || contact === void 0 ? void 0 : contact.notes) && /*#__PURE__*/React.createElement("p", null, contact === null || contact === void 0 ? void 0 : contact.notes), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Form, {
-    action: "edit"
-  }, /*#__PURE__*/React.createElement("button", {
-    type: "submit"
-  }, "Edit")), /*#__PURE__*/React.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Form, {
-    method: "post",
-    action: "destroy",
-    onSubmit: function onSubmit(event) {
-      if (!window.confirm("Please confirm you want to delete this record.")) {
-        event.preventDefault();
-      }
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    type: "submit"
-  }, "Delete")))));
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, task !== null && task !== void 0 && task.name ? /*#__PURE__*/React.createElement(React.Fragment, null, task === null || task === void 0 ? void 0 : task.name) : /*#__PURE__*/React.createElement("i", null, "No Name"), " "), (task === null || task === void 0 ? void 0 : task.description) && /*#__PURE__*/React.createElement("p", null, task === null || task === void 0 ? void 0 : task.description), /*#__PURE__*/React.createElement("p", null, task === null || task === void 0 ? void 0 : task.status)));
 };
 /* harmony default export */ __webpack_exports__["default"] = (Contact);
-var Favorite = function Favorite(_ref4) {
-  var contact = _ref4.contact;
+var Favorite = function Favorite(_ref3) {
+  var contact = _ref3.contact;
   // yes, this is a `let` for later
-  var fetcher = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useFetcher)();
+  var fetcher = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useFetcher)();
   var favorite = contact === null || contact === void 0 ? void 0 : contact.favorite;
   if (fetcher.formData) {
     favorite = fetcher.formData.get("favorite") === "true";
@@ -46891,6 +46901,36 @@ function _asyncToGenerator(fn) {
 
 /***/ }),
 
+/***/ "./node_modules/@babel/runtime/helpers/esm/defineProperty.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/defineProperty.js ***!
+  \*******************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ _defineProperty; }
+/* harmony export */ });
+/* harmony import */ var _toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./toPropertyKey.js */ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js");
+
+function _defineProperty(obj, key, value) {
+  key = (0,_toPropertyKey_js__WEBPACK_IMPORTED_MODULE_0__["default"])(key);
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js":
 /*!*************************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/iterableToArrayLimit.js ***!
@@ -46970,6 +47010,77 @@ __webpack_require__.r(__webpack_exports__);
 
 function _slicedToArray(arr, i) {
   return (0,_arrayWithHoles_js__WEBPACK_IMPORTED_MODULE_0__["default"])(arr) || (0,_iterableToArrayLimit_js__WEBPACK_IMPORTED_MODULE_1__["default"])(arr, i) || (0,_unsupportedIterableToArray_js__WEBPACK_IMPORTED_MODULE_2__["default"])(arr, i) || (0,_nonIterableRest_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPrimitive.js ***!
+  \****************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ toPrimitive; }
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+
+function toPrimitive(t, r) {
+  if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(t) || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i)) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r ? String : Number)(t);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/toPropertyKey.js ***!
+  \******************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ toPropertyKey; }
+/* harmony export */ });
+/* harmony import */ var _typeof_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./typeof.js */ "./node_modules/@babel/runtime/helpers/esm/typeof.js");
+/* harmony import */ var _toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./toPrimitive.js */ "./node_modules/@babel/runtime/helpers/esm/toPrimitive.js");
+
+
+function toPropertyKey(t) {
+  var i = (0,_toPrimitive_js__WEBPACK_IMPORTED_MODULE_1__["default"])(t, "string");
+  return "symbol" == (0,_typeof_js__WEBPACK_IMPORTED_MODULE_0__["default"])(i) ? i : String(i);
+}
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/typeof.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/typeof.js ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ _typeof; }
+/* harmony export */ });
+function _typeof(o) {
+  "@babel/helpers - typeof";
+
+  return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) {
+    return typeof o;
+  } : function (o) {
+    return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
+  }, _typeof(o);
 }
 
 /***/ }),
@@ -53061,13 +53172,13 @@ var router = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_10__.createBrowserRout
       index: true,
       element: /*#__PURE__*/React.createElement(_routes_index__WEBPACK_IMPORTED_MODULE_8__["default"], null)
     }, {
-      path: "contacts/:taskId",
+      path: "tasks/:taskId",
       element: /*#__PURE__*/React.createElement(_routes_task__WEBPACK_IMPORTED_MODULE_5__["default"], null),
       loader: _routes_task__WEBPACK_IMPORTED_MODULE_5__.loader,
       action: _routes_task__WEBPACK_IMPORTED_MODULE_5__.action
     }]
   }, {
-    path: "contacts/:taskId",
+    path: "tasks/:taskId",
     element: /*#__PURE__*/React.createElement(_routes_task__WEBPACK_IMPORTED_MODULE_5__["default"], null),
     loader: _routes_task__WEBPACK_IMPORTED_MODULE_5__.loader,
     action: _routes_task__WEBPACK_IMPORTED_MODULE_5__.action
@@ -53076,12 +53187,12 @@ var router = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_10__.createBrowserRout
     element: /*#__PURE__*/React.createElement(_routes_index__WEBPACK_IMPORTED_MODULE_8__["default"], null),
     loader: _routes_task__WEBPACK_IMPORTED_MODULE_5__.loader
   }, {
-    path: "/contacts/:taskId/edit",
+    path: "/tasks/:taskId/edit",
     element: /*#__PURE__*/React.createElement(_routes_edit__WEBPACK_IMPORTED_MODULE_6__["default"], null),
     loader: _routes_task__WEBPACK_IMPORTED_MODULE_5__.loader,
     action: _routes_edit__WEBPACK_IMPORTED_MODULE_6__.action
   }, {
-    path: "contacts/:taskId/destroy",
+    path: "tasks/:taskId/destroy",
     action: _routes_destroy__WEBPACK_IMPORTED_MODULE_7__.action,
     errorElement: /*#__PURE__*/React.createElement("div", null, "Oops! There was an error.")
   }]
