@@ -3,8 +3,9 @@ import { getContacts, createContact } from "../contacts";
 import ContactType from "src/types/Contact";
 import { useEffect, useState } from "react";
 //@ts-ignore
-import store, { useTypedSelector } from "/src/store";
+import store, { useTypedSelector, useTypedDispatch } from "/src/store";
 import { addTask } from "/src/redux/slices/tasksSlice";
+import { updateTask } from "/src/redux/slices/tasksSlice";
 
 type loaderProps = {
 	request: {
@@ -13,13 +14,12 @@ type loaderProps = {
 }
 
 export async function action(): Promise<Response> {
-
 	const task = {
-		id:crypto.randomUUID(),
-		name:'',
-		description:'',
-		status:false
-	} ;
+		id: crypto.randomUUID(),
+		name: '',
+		description: '',
+		status: false
+	};
 
 	store.dispatch(addTask(task));
 
@@ -34,11 +34,13 @@ export async function loader({ request }: loaderProps): Promise<{ contacts: Cont
 }
 
 const Root = () => {
-	const {  q } = useLoaderData() as { contacts: ContactType[], q: string };
+	const { q } = useLoaderData() as { contacts: ContactType[], q: string };
 	const navigation = useNavigation();
 	const [query, setQuery] = useState(q);
 	const submit = useSubmit();
 	const tasks = useTypedSelector(state => state.tasksReducer);
+	const dispatch = useTypedDispatch();
+
 	console.log(tasks);
 
 	const searching =
@@ -50,6 +52,13 @@ const Root = () => {
 	useEffect(() => {
 		setQuery(q);
 	}, [q]);
+
+	const handleStatusChange = (taskId: string, status: boolean) => {
+		dispatch(updateTask({
+			id: taskId,
+			status: status
+		}))
+	}
 
 	return (
 		<>
@@ -88,15 +97,13 @@ const Root = () => {
 										}
 									>
 										<Link to={`tasks/${task.id}`}>
-											{task.name  ? (
+											{task.name ? (
 												<>
 													{task.name}
 												</>
 											) : (
 												<i>No Name</i>
 											)}
-											{" "}
-											{/* {task.favorite && <span>★</span>} */}
 										</Link>
 									</NavLink>
 
@@ -120,18 +127,8 @@ const Root = () => {
 											<button type="submit">Delete</button>
 										</Form>
 
-										<Form>
-
-											<input type="checkbox" />
-
-										</Form>
-
-
-
-
-
+										<input type="checkbox" checked={task.status} onChange={e => handleStatusChange(task.id, e.target.checked)} />
 									</div>
-
 								</li>
 							))}
 						</ul>

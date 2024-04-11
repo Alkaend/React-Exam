@@ -14,7 +14,14 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 
 	store.dispatch(updateTask({
-		id:params.taskId, ...updates
+		id:params.taskId,
+		/*
+		updates: {
+			name: 'dfghjk',
+			description: 'fdghjk'
+		}
+		*/
+		...updates
 	}));
 
 	return redirect(`/tasks/${params.taskId}`);

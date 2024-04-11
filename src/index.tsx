@@ -10,7 +10,7 @@ import Root, {
 	action as rootAction
 } from './routes/root';
 import ErrorPage from './error-page';
-import Contact, {
+import Task, {
 	loader as contactLoader,
 	action as contactAction
 } from './routes/task';
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "tasks/:taskId",
-				element: <Contact />,
+				element: <Task />,
 				loader: contactLoader,
 				action: contactAction,
 			},
