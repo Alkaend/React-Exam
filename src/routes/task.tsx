@@ -1,16 +1,8 @@
 import { LoaderFunctionArgs, useLoaderData } from "react-router-dom";
-import { updateContact } from "../contacts";
-import { useTypedSelector } from "/src/store";
+import { useTypedSelector } from "../store";
 
 export async function loader({ params }: LoaderFunctionArgs): Promise<string | undefined> {
 	return params.taskId
-}
-
-export async function action({ request, params }: LoaderFunctionArgs) {
-	let formData = await request.formData();
-	return updateContact(params.contactId, {
-		favorite: formData.get("favorite") === "true",
-	});
 }
 
 const Task = () => {

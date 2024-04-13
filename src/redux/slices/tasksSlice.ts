@@ -42,7 +42,7 @@ export const tasksSlice = createSlice({
             localStorage.setItem('tasks', JSON.stringify(state));
         },
         deleteTask: (state, action) => {
-            const taskIndex = state.findIndex(task => task.id === action.payload.id);
+            const taskIndex = state.findIndex(task => task.id === action.payload);
 
             state.splice(taskIndex, 1);
 

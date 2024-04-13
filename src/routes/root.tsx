@@ -1,17 +1,7 @@
-import { Form, Link, Outlet, useNavigation, useLoaderData, useSubmit, redirect, NavLink } from "react-router-dom";
-import { getContacts, createContact } from "../contacts";
-import ContactType from "src/types/Contact";
-import { useEffect, useState } from "react";
-//@ts-ignore
-import store, { useTypedSelector, useTypedDispatch } from "/src/store";
-import { addTask } from "/src/redux/slices/tasksSlice";
-import { updateTask } from "/src/redux/slices/tasksSlice";
-
-type loaderProps = {
-	request: {
-		url: string
-	}
-}
+import { Form, Outlet, useNavigation, redirect, NavLink } from "react-router-dom";
+import { useState } from "react";
+import store, { useTypedSelector, useTypedDispatch } from "../store";
+import { addTask, updateTask } from "../redux/slices/tasksSlice";
 
 export async function action(): Promise<Response> {
 	const task = {
@@ -26,32 +16,12 @@ export async function action(): Promise<Response> {
 	return redirect(`/tasks/${task.id}/edit`);
 }
 
-export async function loader({ request }: loaderProps): Promise<{ contacts: ContactType[], q: string }> {
-	const url = new URL(request.url);
-	const q = url.searchParams.get("q") || "";
-	const contacts = await getContacts(q);
-	return { contacts, q };
-}
-
 const Root = () => {
-	const { q } = useLoaderData() as { contacts: ContactType[], q: string };
 	const navigation = useNavigation();
-	const [query, setQuery] = useState(q);
-	const submit = useSubmit();
-	const tasks = useTypedSelector(state => state.tasksReducer);
+	const [filtered, setFiltered] = useState('all');
+	const tasks = useTypedSelector((state) => state.tasksReducer);
 	const dispatch = useTypedDispatch();
 
-	console.log(tasks);
-
-	const searching =
-		navigation.location &&
-		new URLSearchParams(navigation.location.search).has(
-			"q"
-		);
-
-	useEffect(() => {
-		setQuery(q);
-	}, [q]);
 
 	const handleStatusChange = (taskId: string, status: boolean) => {
 		dispatch(updateTask({
@@ -67,9 +37,9 @@ const Root = () => {
 				<div>
 					<Form id="search-form" role="search">
 						<div className="filter-buttons">
-							<button > All tasks</button>
-							<button> Done tasks</button>
-							<button> Undone tasks</button>
+							<button onClick={() => setFiltered('all')}> All tasks</button>
+							<button onClick={() => setFiltered('done')}> Done tasks</button>
+							<button onClick={() => setFiltered('undone')}> Undone tasks</button>
 						</div>
 
 						<div
@@ -84,19 +54,31 @@ const Root = () => {
 				<nav>
 					{tasks.length ? (
 						<ul>
-							{tasks.map((task) => (
-								<li key={task.id}>
-									<NavLink
-										to={`tasks/${task.id}`}
-										className={({ isActive, isPending }) =>
-											isActive
-												? "active"
-												: isPending
-													? "pending"
-													: ""
-										}
-									>
-										<Link to={`tasks/${task.id}`}>
+							{tasks
+								.filter(task => {
+									switch (filtered) {
+										case "all":
+											return task;
+										case "done":
+											return task.status;
+										case "undone":
+											return !task.status;
+										default:
+											return;
+									}
+								})
+								.map(task => (
+									<li key={task.id}>
+										<NavLink
+											to={`tasks/${task.id}`}
+											className={({ isActive, isPending }) =>
+												isActive
+													? "active"
+													: isPending
+														? "pending"
+														: ""
+											}
+										>
 											{task.name ? (
 												<>
 													{task.name}
@@ -104,33 +86,32 @@ const Root = () => {
 											) : (
 												<i>No Name</i>
 											)}
-										</Link>
-									</NavLink>
+										</NavLink>
 
-									<div className="button-container">
-										<Form action={`tasks/${task.id}/edit`}>
-											<button type="submit">Edit</button>
-										</Form>
-										<Form
-											method="post"
-											action={`tasks/${task.id}/destroy`}
-											onSubmit={(event) => {
-												if (
-													!window.confirm(
-														"Please confirm you want to delete this record."
-													)
-												) {
-													event.preventDefault();
-												}
-											}}
-										>
-											<button type="submit">Delete</button>
-										</Form>
+										<div className="button-container">
+											<Form action={`tasks/${task.id}/edit`}>
+												<button type="submit">Edit</button>
+											</Form>
+											<Form
+												method="post"
+												action={`tasks/${task.id}/destroy`}
+												onSubmit={(event) => {
+													if (
+														!window.confirm(
+															"Please confirm you want to delete this record."
+														)
+													) {
+														event.preventDefault();
+													}
+												}}
+											>
+												<button type="submit">Delete</button>
+											</Form>
 
-										<input type="checkbox" checked={task.status} onChange={e => handleStatusChange(task.id, e.target.checked)} />
-									</div>
-								</li>
-							))}
+											<input type="checkbox" checked={task.status} onChange={e => handleStatusChange(task.id, e.target.checked)} />
+										</div>
+									</li>
+								))}
 						</ul>
 					) : (
 						<p>

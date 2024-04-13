@@ -1,20 +1,16 @@
 import { Form, useLoaderData, redirect, useNavigate, ActionFunctionArgs } from "react-router-dom";
-
-import { updateContact } from "../contacts";
-//@ts-ignore
-import { useTypedSelector } from "/src/store";
-import store from "/src/store";
-import { updateTask } from "/src/redux/slices/tasksSlice";
+import store, { useTypedSelector } from "../store";
+import { updateTask } from "../redux/slices/tasksSlice";
 
 export async function action({ request, params }: ActionFunctionArgs) {
 	const formData = await request.formData();
 
-	
+
 	const updates = Object.fromEntries(formData);
 
 
 	store.dispatch(updateTask({
-		id:params.taskId,
+		id: params.taskId,
 		/*
 		updates: {
 			name: 'dfghjk',
@@ -52,7 +48,7 @@ const EditContact = () => {
 					defaultValue={task?.description}
 					rows={6}
 				/>
-			</label>		
+			</label>
 			<p>
 				<button type="submit">Save</button>
 				<button type="button"

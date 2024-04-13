@@ -6,13 +6,11 @@ import {
 } from "react-router-dom";
 import './index.css';
 import Root, {
-	loader as rootLoader,
 	action as rootAction
 } from './routes/root';
 import ErrorPage from './error-page';
 import Task, {
-	loader as contactLoader,
-	action as contactAction
+	loader as contactLoader
 } from './routes/task';
 import EditContact, {
 	action as editAction
@@ -30,7 +28,6 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <Root />,
-		loader: rootLoader,
 		action: rootAction,
 		errorElement: <ErrorPage />,
 		children: [
@@ -42,7 +39,6 @@ const router = createBrowserRouter([
 				path: "tasks/:taskId",
 				element: <Task />,
 				loader: contactLoader,
-				action: contactAction,
 			},
 			{
 				path: "/tasks/:taskId/edit",
